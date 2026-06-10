@@ -64,6 +64,16 @@ export const reportService = {
   download: (id) => apiClient.get(`/reports/${id}/download`, { responseType: 'blob' }),
   getPresignedUrl: (id) => apiClient.get(`/reports/${id}/url`),
   approve: (id, data) => apiClient.post(`/reports/${id}/approve`, data),
+  delete: (id) => apiClient.delete(`/reports/${id}`),
+};
+
+// Report Schedule services
+export const reportScheduleService = {
+  getAll: () => apiClient.get('/reports/schedules'),
+  create: (data) => apiClient.post('/reports/schedules', data),
+  update: (id, data) => apiClient.put(`/reports/schedules/${id}`, data),
+  delete: (id) => apiClient.delete(`/reports/schedules/${id}`),
+  toggle: (id) => apiClient.post(`/reports/schedules/${id}/toggle`),
 };
 
 // Security services
