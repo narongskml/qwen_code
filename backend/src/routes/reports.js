@@ -5,12 +5,28 @@ const db = require('../database/db');
 const rustFS = require('../storage/rustfs');
 const { validateRequest } = require('../middleware/validation');
 
-// Validation rules
+// Validation rules for on-demand report generation
 const createReportValidator = [
   body('template_id').isUUID().withMessage('Valid template ID is required'),
   body('report_name').notEmpty().withMessage('Report name is required'),
   body('portfolio_id').optional().isUUID(),
   body('format').optional().isIn(['PDF', 'EXCEL', 'CSV']),
+  body('view_only').optional().isBoolean(),
+  validateRequest,
+];
+
+// Validation rules for scheduled reports
+const scheduleReportValidator = [
+  body('template_id').isUUID().withMessage('Valid template ID is required'),
+  body('schedule_name').notEmpty().withMessage('Schedule name is required'),
+  body('cron_expression').notEmpty().withMessage('Cron expression is required'),
+  body('portfolio_id').optional().isUUID(),
+  body('start_date').isISO8601().withMessage('Valid start date is required'),
+  body('end_date').optional().isISO8601(),
+  body('timezone').optional().default('UTC'),
+  body('parameters').optional().isObject(),
+  body('recipient_emails').optional(),
+  body('enabled').optional().isBoolean(),
   validateRequest,
 ];
 
